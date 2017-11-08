@@ -1,26 +1,18 @@
-# opa-example for controlling microservice communication
+# Istio Authorization with Open Policy Agent
 
-Experimenting with [open policy agent](https://github.com/open-policy-agent/opa)
+The data and policies are based on example in [Istio Authorization with Open Policy Agent](https://docs.google.com/document/d/1U2XFmah7tYdmC5lWkk3D43VMAAQ0xkBatKmohf90ICA)
 
-## Prerequisite
+## Using Organizational Chart Data and Policies
 
-Download the OPA interactive shell (a.k.a. REPL), for your platform, from the [OPA github releases page](https://github.com/open-policy-agent/opa/releases/).
-For example, downloading release 0.5.10 for 64-bit Linux:
+Start the OPA REPL with the orgchart data and policy files:
 
-``` sh
-curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.5.10/opa_linux_amd64 \
-    && chmod 755 ./opa
+```sh
+opa run orgchart.json orgchart.rego
 ```
 
-Make sure you can run (`./opa run`) and quit (<kbd>Ctrl-D</kbd> or `exit`) the REPL.
+* Dump the organizational chart data (JSON object named `employees`)
 
-## Examples
-
-### Orgchart
-`./opa run orgchart.json orgchart.rego`
-
-* dump employee data
-```
+```prolog
 > data.employees
 {
   "alice": {
@@ -47,32 +39,46 @@ Make sure you can run (`./opa run`) and quit (<kbd>Ctrl-D</kbd> or `exit`) the R
   }
 }
 ```
-* check if Bob can read the review of Alice
-```
+
+* Check if Bob can read Alice's review
+
+```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "bob"], "user": "alice" }
 false
 ```
-* check if Bob can read the review of himself
-```
+
+* Check if Bob can read his own review
+
+```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "bob"], "user": "bob" }
 true
 ```
-* check if Janet (Bob's manager) can read the review of Bob
-```
+
+* Check if Janet (Bob's manager) can read Bob's review
+
+```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "bob"], "user": "janet" }
 true
 ```
-* check if Bob can read the review of Janet
-```
+
+* Check if Bob can read Janet's review
+
+```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "janet"], "user": "bob" }
 false
 ```
 
-### Servicegraph
-`./opa run servicegraph.json servicegraph.rego`
+## Using Service Graph Data and Policies
 
-* dump service graph data
+Start the OPA REPL with the service-graph data and policy files:
+
+```sh
+opa run servicegraph.json servicegraph.rego
 ```
+
+* Dump service graph data
+
+```prolog
 > data.service_graph
 {
   "landing_page": [
@@ -85,25 +91,33 @@ false
 }
 ```
 
-* check if request from the outside can reach `landing_page`
-```
+* Check if request from the outside can reach `landing_page`
+
+```prolog
 > true = data.servicegraph.allow with input as { "source": "some_external_source", "external" : true, "target":"landing_page" }
 true
 ```
-* check if request from the outside can reach `details`
-```
-> true = data.servicegraph.allow with input as { "source": "some_external_source", "external" : true, "target":"details" }
+
+* Check if request from the outside can reach `details`
+
+```prolog
+> true = data.servicegraph.allow with input as
+{ "source": "some_external_source", "external" : true, "target":"details" }
 false
 ```
 
-* check if request from `landing_page` can reach `ratings`
-```
-> true = data.servicegraph.allow with input as { "source": "landing_page", "external" : false, "target": "ratings" }
+* Check if request from `landing_page` can reach `ratings`
+
+```prolog
+> true = data.servicegraph.allow with input as
+{ "source": "landing_page", "external" : false, "target": "ratings" }
 false
 ```
 
-* check if request from `reviews` can reach `ratings`
-```
-> true = data.servicegraph.allow with input as { "source": "reviews", "external" : false, "target": "ratings" }
+* Check if request from `reviews` can reach `ratings`
+
+```prolog
+> true = data.servicegraph.allow with input as
+{ "source": "reviews", "external" : false, "target": "ratings" }
 true
 ```
