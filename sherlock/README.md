@@ -13,7 +13,7 @@ Thus, the policy can be expressed as:
 - allow: source and destination pods are in the same namespace
 - allow: source is `external` (i.e. via ingress) and destination has labels `role=api` and label `ingress=true`
 - allow: source is not `external` and destination has label `role` with value `api`
-- allow: specific tuple {service 'foo' to service 'bar'} - **this is currently unimplemented**
+- allow: specific tuple {service 'foo' to service 'bar'}, optionally setting access to read-only
 
 ### RBAC Based Implementation
 
