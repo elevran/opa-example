@@ -8,16 +8,12 @@ default allow = false
 
 # allow request if it is inside the same namespce ...
 allow {
-      services[request.src.service].namespace = services[request.dst.service].namespace
+      services[request.src].namespace = services[request.dst].namespace
 }
 
-# ... or coming from ingress to a service API pod (based on labels) ...
+# ... or coming from ingress to a service API pod (based on labels: {"ingress":true, "role":"api") ...
 allow {
     request.src.service = external
-    services[request.dst.service].labels.ingress = "api"
-}
-
-# ... or specifically allowed ...
-allow {
-      explicit.allow  # specifically allowed tuples  
+    services[request.dst].labels.ingress = true
+    services[request.dst].labels.role = "api"
 }

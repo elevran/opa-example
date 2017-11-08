@@ -1,14 +1,16 @@
-[
-    {
-        "desc": "",
-        "src": "sid1",
-        "dst": "sid2",
-        "method": ""
-    },
-    {
-        "desc": "",
-        "src": "sid1",
-        "dst": "sid2",
-        "method": ""
-    }
-]
+{
+    "requests": [
+        {
+            "desc": "ingress to productpage",
+            "src": "ingress/ingress",
+            "dst": "sid2",
+            "method": ""
+        },
+        {
+            "desc": "",
+            "src": "sid1",
+            "dst": "sid2",
+            "method": ""
+        }
+    ]
+}
