@@ -1,0 +1,6 @@
+{
+    "service_graph": {
+        "landing_page": ["details", "reviews"],
+        "reviews": ["ratings"]
+    }
+}

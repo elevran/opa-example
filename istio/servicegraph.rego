@@ -1,9 +1,6 @@
 package servicegraph
 
-service_graph = {
-    "landing_page": ["details", "reviews"],
-    "reviews": ["ratings"],
-}
+import data.service_graph
 
 default allow = false
 
