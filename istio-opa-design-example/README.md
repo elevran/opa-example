@@ -124,6 +124,7 @@ true
 ```
 
 ### Toplevel
+
 `./opa run *.json *.rego`
 
 * check if user Janet can view review of Bob arriving from `landing_page`
@@ -147,6 +148,9 @@ false
 * check which requests are allowed from a batch of requests in [requestsbatch.json](https://github.com/elevran/opa-example/blob/master/istio-opa-design-example/requestsbatch.json)
 
 `./opa run *.json *.rego`
+
+* show identitiers of allowed requests
+
 ```
 > data.toplevel.allowed[id]
 +----+
@@ -156,3 +160,16 @@ false
 | 3  |
 +----+
 ```
+
+* show allowed requests
+
+```
+> { data.toplevel.allowed[id], data.requests[id] }
++----+-------------------------------------------------------------------------------------+
+| id |                   {data.toplevel.allowed[id], data.requests[id]}                    |
++----+-------------------------------------------------------------------------------------+
+| 0  | [{"external":false,"id":0,"path":["reviews","bob"],"source":"landing_page","targ... |
+| 3  | [{"external":false,"id":3,"path":["reviews","bob"],"source":"landing_page","targ... |
++----+-------------------------------------------------------------------------------------+
+```
+

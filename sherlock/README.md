@@ -11,16 +11,9 @@ Thus, the policy can be expressed as:
 
 - default: deny
 - allow: source and destination pods are in the same namespace
-- allow: source is `ingress` and destination has label `role` with value `api` and label `ingress` with value `true`
-- allow: source is not `ingress` and destination has label `role` with value `api`
-- allow: specific tuple {service 'foo' to service-'bar'}
-
-### Experiment
-
-- The policy document includes
-- The requests document includes
-
-To run the experiment, load both documents into the OPA REPL: ``.
+- allow: source is `external` (i.e. via ingress) and destination has labels `role=api` and label `ingress=true`
+- allow: source is not `external` and destination has label `role` with value `api`
+- allow: specific tuple {service 'foo' to service 'bar'} - **this is currently unimplemented**
 
 ### RBAC Based Implementation
 
@@ -31,3 +24,80 @@ An RBAC policy is composed of two parts:
 
 Given the above policy definition, policies for an RBAC based policy engine, could become extremely verbose.
  For example, expressing a policy that allows any two components in the same namespace to communicate, requires a separate policy definition (i.e., Role and Role-Binding) for each and every namespace and all service accounts contained within.
+
+## Experiment
+
+To run the experiment, load both documents into the OPA REPL: ``.
+
+```sh
+opa services.*
+```
+
+- the `services.json` file defines the application services. Such data would typically come from an orchestrator, such as
+ Kubernetes. For each service, it includes the service name, namespace, labels and a service-account would is used to identify the service in requests
+- the `services.rego` policy defines the same-namespace constraint, the ingress constraints and the access to service API endpoint constraints.
+- requests are encoded as JSON object with the below format:
+
+```json
+{
+    "desc": "description string",
+    "src": "source service account",
+    "dst": "destination service account",
+    "method": "HTTP method name",
+    "url": "request URL"
+}
+```
+
+- Show all valid service accounts
+
+```prolog
+> > data.service_policy.valid_service_account
+[
+  "ingress/ingress",
+  "ingress/login",
+  "storefront/fe",
+  "storefront/details",
+  "reviews/reviews",
+  "reviews/ratings",
+  "reviews/ratings",
+  "userdb/users",
+  "userdb/users"
+]
+```
+
+### Ingress Policy
+
+Note that only attributes that are relevant to the specific policy are encoded.
+
+```prolog
+> data.service_policy.allow with input as { "src": "external", "dst": "ingress/ingress" }
+true
+> data.service_policy.allow with input as { "src": "external", "dst": "storefront/fe" }
+true
+> data.service_policy.allow with input as { "src": "external", "dst": "ingress/login" }
+false
+```
+
+### Same Namespace Policy
+
+Note that only attributes that are relevant to the specific policy are encoded.
+
+```prolog
+> data.service_policy.allow with input as { "src": "ingress/ingress", "dst": "ingress/login" }
+true
+> data.service_policy.allow with input as { "src": "default/doesnt-exist", "dst": "ingress/login" }
+false
+> data.service_policy.allow with input as { "src": "reviews/ratings", "dst": "reviews/reviews" }
+true
+```
+
+# Cross Namespace to Service API Endpoints
+
+Note that only attributes that are relevant to the specific policy are encoded.
+
+```prolog
+> data.service_policy.allow with input as { "src": "reviews/ratings", "dst": "userdb/users" }
+true
+> data.service_policy.allow with input as { "src": "reviews/ratings", "dst": "userdb/mysql" }
+false
+```

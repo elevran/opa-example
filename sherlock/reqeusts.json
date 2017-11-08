@@ -2,14 +2,14 @@
     "requests": [
         {
             "desc": "ingress to productpage",
-            "src": "ingress/ingress",
-            "dst": "sid2",
-            "method": ""
+            "src": "external",
+            "dst": "storefront/fe",
+            "method": "GET"
         },
         {
-            "desc": "",
-            "src": "sid1",
-            "dst": "sid2",
+            "desc": "foo",
+            "src": "ns/sa",
+            "dst": "ns2/sa2",
             "method": ""
         }
     ]

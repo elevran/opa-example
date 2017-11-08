@@ -4,7 +4,7 @@
             "name": "ingress",
             "ns": "ingress",
             "sa": "ingress/ingress",
-            "labels": {"env": "prod", "role": "ingress"}
+            "labels": {"env": "prod", "role": "api", "ingress": true }
         },
         {
             "name": "login",
@@ -51,7 +51,7 @@
         {
             "name": "db",
             "ns": "userdb",
-            "sa": "userdb/users",
+            "sa": "userdb/mysql",
             "labels": {"env": "prod", "app": "bookstore", "role": "sqldb"}
         }
     ]
