@@ -1,4 +1,4 @@
-package example_policy
+package sherlock
 
 #import data.requests
 #import data.
@@ -8,24 +8,16 @@ default allow = false
 
 # allow request if it is inside the same namespce ...
 allow {
-      all_communication_inside_same_namespace  # source and destination pods are in the same namespace
+      services[request.src.service].namespace = services[request.dst.service].namespace
 }
 
-# ... or coming from ingress to a service API pod ...
+# ... or coming from ingress to a service API pod (based on labels) ...
 allow {
-      ingress_to_any_service_api  # source is `ingress` and destination has label `role` with value `api`
+    request.src.service = external
+    services[request.dst.service].labels.ingress = "api"
 }
 
 # ... or specifically allowed ...
 allow {
-      tuples.allow  # specifically allowed tuples  
-}
-
-all_communication_inside_same_namespace {
-    services[request.src.service].namespace = services[request.dst.service].namespace 
-}
-
-ingress_to_any_service_api {
-    request.src.service = external
-    services[request.dst.service].labels.role = "api"
+      explicit.allow  # specifically allowed tuples  
 }

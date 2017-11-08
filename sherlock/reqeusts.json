@@ -1,5 +1,14 @@
 [
     {
-        "source": "service",
+        "desc": "",
+        "src": "sid1",
+        "dst": "sid2",
+        "method": ""
+    },
+    {
+        "desc": "",
+        "src": "sid1",
+        "dst": "sid2",
+        "method": ""
     }
 ]

@@ -1,0 +1,56 @@
+[
+    {
+        "name": "ingress",
+        "ns": "ingress",
+        "sa": "ingress/ingress",
+        "labels": {"env": "prod", "role": "ingress"}
+    },
+    {
+        "name": "login",
+        "ns": "ingress",
+        "sa": "ingress/login",
+        "labels": {"env": "prod", "app": "login", "role": "api"}
+    },
+    {
+        "name": "productpage",
+        "ns": "storefront",
+        "sa": "storefront/fe",
+        "labels": {"env": "prod", "app": "bookstore", "role": "api", "ingress": true} 
+    },
+    {
+        "name": "details",
+        "ns": "storefront",
+        "sa": "storefront/details",
+        "labels": {"env": "prod", "app": "bookstore", "role": "details"}
+    },
+    {
+        "name": "reviews",
+        "ns": "reviews",
+        "sa": "reviews/reviews",
+        "labels": {"env": "prod", "app": "bookstore", "role": "api"}
+    },    
+    {
+        "name": "ratings",
+        "ns": "reviews",
+        "sa": "reviews/ratings",
+        "labels": {"env": "prod", "app": "bookstore", "role": "rating", "version": "v1"}
+    },
+    {
+        "name": "ratings-v3",
+        "ns": "reviews",
+        "sa": "reviews/ratings",
+        "labels": {"env": "prod", "app": "bookstore", "role": "rating", "version": "v3"}
+    },
+    {
+        "name": "users",
+        "ns": "userdb",
+        "sa": "userdb/users",
+        "labels": {"env": "prod", "app": "bookstore", "role": "api"}
+    },
+    {
+        "name": "db",
+        "ns": "userdb",
+        "sa": "userdb/users",
+        "labels": {"env": "prod", "app": "bookstore", "role": "sqldb"}
+    }
+]
