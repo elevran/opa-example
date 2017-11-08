@@ -10,5 +10,4 @@ default allow = false
 allow {
     servicegraph.allow  # service graph policy allows, and...
     orgchart.allow      # org chart policy allows.
-    false
 }
