@@ -145,6 +145,7 @@ false
 ### Toplevel Batch
 
 * check which requests are allowed from a batch of requests in requestsbatch.json
+
 `./opa run *.json *.rego`
 ```
 > data.toplevel.allowed[id]
