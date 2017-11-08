@@ -122,3 +122,22 @@ false
 { "source": "reviews", "external" : false, "target": "ratings" }
 true
 ```
+
+### Toplevel
+`./opa run *.json *.rego`
+
+* check if user Janet can view review of Bob arriving from `landing_page`
+```
+> true = data.toplevel.allow with input as { "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" }
+false
+```
+* check if user Janet can view review of Bob arriving from `ratings`
+```
+> true = data.toplevel.allow with input as { "source": "ratings", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" }
+false
+```
+* check if user Alice can view review of Bob arriving from `landing_page`
+```
+> true = data.toplevel.allow with input as { "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "alice" }
+false
+```
