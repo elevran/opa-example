@@ -2,6 +2,7 @@
     "requests": [
         { "id": 0, "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" },
         { "id": 1, "source": "ratings", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" },
-        { "id": 2, "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "alice" }
+        { "id": 2, "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "alice" },
+        { "id": 3, "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "ken" }
     ]
 }
