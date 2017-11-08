@@ -1,0 +1,9 @@
+{
+    "explicit": [
+        {
+            "src": "ingress/login",
+            "dst": "userdb/mysql",
+            "readonly": true
+        }
+    ]
+}

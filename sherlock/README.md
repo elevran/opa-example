@@ -30,7 +30,7 @@ Given the above policy definition, policies for an RBAC based policy engine, cou
 To run the experiment, load both documents into the OPA REPL: ``.
 
 ```sh
-opa services.*
+opa services.* explicit.*
 ```
 
 - the `services.json` file defines the application services. Such data would typically come from an orchestrator, such as
@@ -91,7 +91,7 @@ false
 true
 ```
 
-# Cross Namespace to Service API Endpoints
+### Cross Namespace to Service API Endpoints
 
 Note that only attributes that are relevant to the specific policy are encoded.
 
@@ -99,5 +99,24 @@ Note that only attributes that are relevant to the specific policy are encoded.
 > data.service_policy.allow with input as { "src": "reviews/ratings", "dst": "userdb/users" }
 true
 > data.service_policy.allow with input as { "src": "reviews/ratings", "dst": "userdb/mysql" }
+false
+```
+
+### Explicitly Allowed
+
+```prolog
+> data.explicit_link.allow
+false
+> data.explicit
+[
+  {
+    "dst": "userdb/mysql",
+    "readonly": true,
+    "src": "ingress/login"
+  }
+]
+> data.explicit_link.allow with input as { "src": "ingress/login", "dst": "userdb/mysql", "method": "GET"}
+true
+> data.explicit_link.allow with input as { "src": "ingress/login", "dst": "userdb/mysql", "method": "PUT"}
 false
 ```
