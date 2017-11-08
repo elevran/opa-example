@@ -1,0 +1,22 @@
+{
+    "namespace": {
+        "default": {             
+        },
+        "ingress": { 
+            "ingress": { "labels": {"env": "prod", "role": "ingress"} },
+            "login": { "labels": {"env": "prod", "role": "login"} } 
+        },
+        "storefront": {
+            "bookinfo": { "labels": {"env": "prod", "app": "bookstore", "role": "api", "version": "v2"} },
+            "details": { "labels": {"env": "prod", "app": "bookstore", "role": "details"} }
+        },
+        "reviews": {
+            "reviews": { "labels": {"env": "prod", "app": "bookstore", "role": "api"} },
+            "ratings": { "labels": {"env": "prod", "app": "bookstore", "role": "rating"} }
+        },
+        "userdb": {
+            "users": { "labels": {"env": "prod", "app": "bookstore", "role": "api"} },
+            "db": { "labels": {"env": "prod", "app": "bookstore", "role": "sqldb"} }
+        }
+    }
+}
