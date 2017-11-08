@@ -95,7 +95,7 @@ opa run servicegraph.json servicegraph.rego
 
 ```prolog
 > true = data.servicegraph.allow with input as
-{ "source": "some_external_source", "external" : true, "target":"landing_page" }
+{ "source": "some_external_source", "external" : true, "target": "landing_page" }
 true
 ```
 
@@ -103,7 +103,7 @@ true
 
 ```prolog
 > true = data.servicegraph.allow with input as
-{ "source": "some_external_source", "external" : true, "target":"details" }
+{ "source": "some_external_source", "external" : true, "target": "details" }
 false
 ```
 
