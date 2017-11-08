@@ -141,3 +141,17 @@ false
 > true = data.toplevel.allow with input as { "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "alice" }
 false
 ```
+
+### Toplevel Batch
+
+* check which requests are allowed from a batch of requests in requestsbatch.json
+`./opa run *.json *.rego`
+```
+> data.toplevel.allowed[id]
++----+
+| id |
++----+
+| 0  |
+| 3  |
++----+
+```
