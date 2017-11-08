@@ -1,0 +1,8 @@
+{
+    "employees": {
+        "bob": {"manager": "janet", "roles": ["engineering"]},
+        "alice": {"manager": "janet", "roles": ["engineering"]},
+        "janet": {"roles": ["engineering"]},
+        "ken": {"roles": ["hr"]}
+    }
+}

@@ -1,11 +1,6 @@
 package orgchart
 
-employees = {
-    "bob": {"manager": "janet", "roles": ["engineering"]},
-    "alice": {"manager": "janet", "roles": ["engineering"]},
-    "janet": {"roles": ["engineering"]},
-    "ken": {"roles": ["hr"]},
-}
+import data.employees
 
 # Allow access to non-sensitive APIs.
 allow { not is_sensitive_api }
