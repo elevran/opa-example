@@ -144,7 +144,7 @@ false
 
 ### Toplevel Batch
 
-* check which requests are allowed from a batch of requests in requestsbatch.json
+* check which requests are allowed from a batch of requests in [requestsbatch.json](https://github.com/elevran/opa-example/blob/master/istio-opa-design-example/requestsbatch.json)
 
 `./opa run *.json *.rego`
 ```
