@@ -67,3 +67,43 @@ true
 > true = data.orgchart.allow with input as { "path": [ "reviews", "janet"], "user": "bob" }
 false
 ```
+
+### Servicegraph
+`./opa run servicegraph.json servicegraph.rego`
+
+* dump service graph data
+```
+> data.service_graph
+{
+  "landing_page": [
+    "details",
+    "reviews"
+  ],
+  "reviews": [
+    "ratings"
+  ]
+}
+```
+
+* check if request from the outside can reach `landing_page`
+```
+> true = data.servicegraph.allow with input as { "source": "some_external_source", "external" : true, "target":"landing_page" }
+true
+```
+* check if request from the outside can reach `details`
+```
+> true = data.servicegraph.allow with input as { "source": "some_external_source", "external" : true, "target":"details" }
+false
+```
+
+* check if request from `landing_page` can reach `ratings`
+```
+> true = data.servicegraph.allow with input as { "source": "landing_page", "external" : false, "target": "ratings" }
+false
+```
+
+* check if request from `reviews` can reach `ratings`
+```
+> true = data.servicegraph.allow with input as { "source": "reviews", "external" : false, "target": "ratings" }
+true
+```
