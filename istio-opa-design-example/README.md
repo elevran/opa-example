@@ -1,6 +1,6 @@
 # Istio Authorization with Open Policy Agent
 
-The data and policies are based on example in [Istio Authorization with Open Policy Agent](https://docs.google.com/document/d/1U2XFmah7tYdmC5lWkk3D43VMAAQ0xkBatKmohf90ICA)
+The data and policies are based on the advanced policy example (Appendix 2) in [Istio Authorization with Open Policy Agent](https://docs.google.com/document/d/1U2XFmah7tYdmC5lWkk3D43VMAAQ0xkBatKmohf90ICA)
 
 ## Using Organizational Chart Data and Policies
 
@@ -94,7 +94,8 @@ opa run servicegraph.json servicegraph.rego
 * Check if request from the outside can reach `landing_page`
 
 ```prolog
-> true = data.servicegraph.allow with input as { "source": "some_external_source", "external" : true, "target":"landing_page" }
+> true = data.servicegraph.allow with input as
+{ "source": "some_external_source", "external" : true, "target":"landing_page" }
 true
 ```
 
