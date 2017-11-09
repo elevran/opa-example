@@ -10,7 +10,7 @@ Start the OPA REPL with the orgchart data and policy files:
 opa run orgchart.json orgchart.rego
 ```
 
-* Dump the organizational chart data (JSON object named `employees`)
+- Dump the organizational chart data (JSON object named `employees`)
 
 ```prolog
 > data.employees
@@ -40,28 +40,28 @@ opa run orgchart.json orgchart.rego
 }
 ```
 
-* Check if Bob can read Alice's review
+- Check if Bob can read Alice's review
 
 ```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "bob"], "user": "alice" }
 false
 ```
 
-* Check if Bob can read his own review
+- Check if Bob can read his own review
 
 ```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "bob"], "user": "bob" }
 true
 ```
 
-* Check if Janet (Bob's manager) can read Bob's review
+- Check if Janet (Bob's manager) can read Bob's review
 
 ```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "bob"], "user": "janet" }
 true
 ```
 
-* Check if Bob can read Janet's review
+- Check if Bob can read Janet's review
 
 ```prolog
 > true = data.orgchart.allow with input as { "path": [ "reviews", "janet"], "user": "bob" }
@@ -76,7 +76,7 @@ Start the OPA REPL with the service-graph data and policy files:
 opa run servicegraph.json servicegraph.rego
 ```
 
-* Dump service graph data
+- Dump service graph data
 
 ```prolog
 > data.service_graph
@@ -91,7 +91,7 @@ opa run servicegraph.json servicegraph.rego
 }
 ```
 
-* Check if request from the outside can reach `landing_page`
+- Check if request from the outside can reach `landing_page`
 
 ```prolog
 > true = data.servicegraph.allow with input as
@@ -99,7 +99,7 @@ opa run servicegraph.json servicegraph.rego
 true
 ```
 
-* Check if request from the outside can reach `details`
+- Check if request from the outside can reach `details`
 
 ```prolog
 > true = data.servicegraph.allow with input as
@@ -107,7 +107,7 @@ true
 false
 ```
 
-* Check if request from `landing_page` can reach `ratings`
+- Check if request from `landing_page` can reach `ratings`
 
 ```prolog
 > true = data.servicegraph.allow with input as
@@ -115,7 +115,7 @@ false
 false
 ```
 
-* Check if request from `reviews` can reach `ratings`
+- Check if request from `reviews` can reach `ratings`
 
 ```prolog
 > true = data.servicegraph.allow with input as
@@ -123,35 +123,43 @@ false
 true
 ```
 
-### Toplevel
+## Using Top-level Policy
+
+Start the OPA REPL with all data and policy files:
 
 `./opa run *.json *.rego`
 
-* check if user Janet can view review of Bob arriving from `landing_page`
-```
-> true = data.toplevel.allow with input as { "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" }
-false
-```
-* check if user Janet can view review of Bob arriving from `ratings`
-```
-> true = data.toplevel.allow with input as { "source": "ratings", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" }
-false
-```
-* check if user Alice can view review of Bob arriving from `landing_page`
-```
-> true = data.toplevel.allow with input as { "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "alice" }
+- Check if Janet can view Bob's review, arriving from `landing_page`
+
+```prolog
+> true = data.toplevel.allow with input as
+{ "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" }
 false
 ```
 
-### Toplevel Batch
+- Check if Janet can view Bob's review, arriving from `ratings`
 
-* check which requests are allowed from a batch of requests in [requestsbatch.json](https://github.com/elevran/opa-example/blob/master/istio-opa-design-example/requestsbatch.json)
-
-`./opa run *.json *.rego`
-
-* show identitiers of allowed requests
-
+```prolog
+> true = data.toplevel.allow with input as
+{ "source": "ratings", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "janet" }
+false
 ```
+
+- Check if Alice can view Bob's review, arriving from `landing_page`
+
+```prolog
+> true = data.toplevel.allow with input as
+{ "source": "landing_page", "external" : false, "target": "reviews", "path": [ "reviews", "bob"], "user": "alice" }
+false
+```
+
+### Processing Top-level Policy Using a Request Batch
+
+- Check which requests, in [requestsbatch.json](https://github.com/elevran/opa-example/blob/master/istio-opa-design-example/requestsbatch.json) batch, are allowed
+
+- Show identifiers of allowed requests
+
+```prolog
 > data.toplevel.allowed[id]
 +----+
 | id |
@@ -161,9 +169,9 @@ false
 +----+
 ```
 
-* show allowed requests
+- Show allowed requests
 
-```
+```prolog
 > { data.toplevel.allowed[id], data.requests[id] }
 +----+-------------------------------------------------------------------------------------+
 | id |                   {data.toplevel.allowed[id], data.requests[id]}                    |
@@ -172,4 +180,3 @@ false
 | 3  | [{"external":false,"id":3,"path":["reviews","bob"],"source":"landing_page","targ... |
 +----+-------------------------------------------------------------------------------------+
 ```
-
