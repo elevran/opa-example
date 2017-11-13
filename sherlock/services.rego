@@ -5,7 +5,7 @@ import data.services
 # default: deny all
 default allow = false
 
-# allow request if it is inside the same namespce ...
+# allow request if it is inside the same namespace ...
 allow {    
     valid_service_account[input.src]
     valid_service_account[input.dst]
